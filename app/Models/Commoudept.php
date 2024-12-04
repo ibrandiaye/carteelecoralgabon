@@ -8,7 +8,7 @@ class Commoudept extends Model
 {
 
     protected $fillable = [
-        'commoudept','siege_id','arrondissement_id','province_id'
+        'commoudept','siege_id','province_id'
     ];
 
     public function province()

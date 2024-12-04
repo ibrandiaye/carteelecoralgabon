@@ -1,5 +1,5 @@
 @extends('welcome')
-@section('title', '| commoudept')
+@section('title', '| electeur')
 
 
 @section('content')
@@ -27,30 +27,37 @@
 
     <div class="col-12">
         <div class="card ">
-            <div class="card-header">LISTE D'ENREGISTREMENT DES Départements</div>
+            <div class="card-header">LISTE D'ENREGISTREMENT DES ELECTEURS</div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalform2">
-                        importer
-                    </button>
+
                     <table id="example1" class="table table-bordered table-responsive-md table-striped text-center">
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Commune  ou Departement</th>
-                                <th>Nom province</th>
+                                <th>Prenom</th>
+                                <th>Nom</th>
+                                <th>NIP / IPN</th>
+                                <th>Date de Naissance</th>
+                                <th>Lieu de Naissance</th>
+                                <th>CentreVote</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach ($commoudepts as $commoudept)
+                        @foreach ($electeurs as $electeur)
                             <tr>
-                                <td>{{ $commoudept->id }}</td>
-                                <td>{{ $commoudept->commoudept }}</td>
-                                <td>{{ $commoudept->province->province }}</td>
-                                <td>
-                                    <a href="{{ route('commoudept.edit', $commoudept->id) }}" role="button" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                                <td>{{ $electeur->id }}</td>
+                                <td>{{ $electeur->prenom }}</td>
+                                <td>{{ $electeur->nom }}</td>
+                                <td>{{ $electeur->nip_ipn }}</td>
+                                <td>{{ $electeur->date_naiss }}</td>
+                                <td>{{ $electeur->lieu_naiss }}</td>
 
-                                    <a  href="{{ route('commoudept.destroy', $commoudept->id) }}" class="btn btn-danger"  onclick="if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]><i class="fa fa-trash"></i></a>
+                                <td>{{ $electeur->centrevote }}</td>
+                                <td>
+                                    <a href="{{ route('electeur.edit', $electeur->id) }}" role="button" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+
+                                    <a  href="{{ route('electeur.destroy', $electeur->id) }}" class="btn btn-danger"  onclick="if(!confirm('Êtes-vous sûr de vouloir supprimer cet enregistrement ?')) { return false; }"]><i class="fa fa-trash"></i></a>
 
 
 
@@ -69,11 +76,11 @@
 
 
 
-
+{{--
                 <div class="modal fade" id="exampleModalform2" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
-                            <form action="{{ route('importer.commoudept') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('importer.electeur') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Importer Commune ou Departement</h5>
@@ -98,5 +105,5 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 @endsection

@@ -1,6 +1,6 @@
 /*DataTable Init*/
 
-"use strict"; 
+"use strict";
 
 $(document).ready(function() {
 	$('#datable_1').DataTable({
@@ -12,21 +12,21 @@ $(document).ready(function() {
 
 		}
 	});
-    $('#datable_2').DataTable({ 
+    $('#datable_2').DataTable({
 		autoWidth: false,
 		lengthChange: false,
 		"bPaginate": false,
 		language: { search: "",searchPlaceholder: "Search" }
 	});
-	
+
 	/*Export DataTable*/
 	$('#datable_3').DataTable( {
 		dom: 'Bfrtip',
 		responsive: true,
-		language: { search: "",searchPlaceholder: "Search" },
-		"bPaginate": false,
+		language: {  url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/fr-FR.json', },
+		"bPaginate": true,
 		"info":     false,
-		"bFilter":     false,
+		"bFilter":     true,
 		buttons: [
 			'copy', 'csv', 'excel', 'pdf', 'print'
 		],
@@ -34,10 +34,10 @@ $(document).ready(function() {
 			$('.dt-buttons > .btn').addClass('btn-outline-light btn-sm');
 		}
 	} );
-	
+
 	var table = $('#datable_5').DataTable({
 		responsive: true,
-		language: { 
+		language: {
 		search: "" ,
 		sLengthMenu: "_MENU_Items",
 		},
@@ -54,7 +54,7 @@ $(document).ready(function() {
             $(this).addClass('selected');
         }
     } );
- 
+
     $('#button').click( function () {
         table.row('.selected').remove().draw( false );
     } );

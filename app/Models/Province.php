@@ -9,4 +9,10 @@ class Province extends Model
     protected $fillable = [
         'province'
     ];
+    public function commoudepts()
+    {
+        return $this->hasMany(Commoudept::class);
+    }
+
+
 }

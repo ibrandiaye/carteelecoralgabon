@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ArrondissementController;
+use App\Http\Controllers\CentrevoteController;
 use App\Http\Controllers\CommoudeptController;
+use App\Http\Controllers\ElecteurController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\SiegeController;
 use Illuminate\Support\Facades\Route;
@@ -22,3 +24,12 @@ Route::resource('siege', SiegeController::class)/*->middleware("auth")*/;
 Route::resource('arrondissement', ArrondissementController::class)/*->middleware("auth")*/;
 Route::post('/importer/siege',[SiegeController::class,'importExcel'])->name("importer.siege")/*->middleware("auth")*/;
 Route::post('/importer/arrondissement',[ArrondissementController::class,'importExcel'])->name("importer.arrondissement")/*->middleware("auth")*/;
+Route::resource('centrevote', CentrevoteController::class)/*->middleware("auth")*/;
+Route::post('/importer/centrevote',[CentrevoteController::class,'importExcel'])->name("importer.centrevote")/*->middleware("auth")*/;
+
+Route::resource('electeur', ElecteurController::class)/*->middleware("auth")*/;
+
+
+Route::get('/carte', function () {
+    return view('carte');
+});

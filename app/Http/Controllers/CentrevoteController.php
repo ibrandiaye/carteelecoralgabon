@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Centrevote;
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CentrevoteRepository;
 use App\Repositories\CommoudeptRepository;
+use App\Repositories\ProvinceRepository;
+use App\Repositories\SiegeRepository;
 use Illuminate\Http\Request;
 use Spatie\SimpleExcel\SimpleExcelReader;
 
@@ -12,12 +15,17 @@ class CentrevoteController extends Controller
 {
     protected $centrevoteRepository;
     protected $commoudeptRepository;
+    protected $provinceRepository;
 
-
-    public function __construct(CentrevoteRepository $centrevoteRepository, CommoudeptRepository $commoudeptRepository){
-        $this->centrevoteRepository =$centrevoteRepository;
-        $this->commoudeptRepository = $commoudeptRepository;
-
+    protected $siegeRepository;
+    protected $arrondissementRepository;
+    public function __construct(CentrevoteRepository $centrevoteRepository, CommoudeptRepository $commoudeptRepository,
+    ProvinceRepository $provinceRepository,SiegeRepository $siegeRepository,ArrondissementRepository $arrondissementRepository){
+        $this->centrevoteRepository         =   $centrevoteRepository;
+        $this->commoudeptRepository         =   $commoudeptRepository;
+        $this->siegeRepository              =   $siegeRepository;
+        $this->arrondissementRepository     =   $arrondissementRepository;
+        $this->provinceRepository           =   $provinceRepository;
     }
 
     /**
@@ -39,7 +47,11 @@ class CentrevoteController extends Controller
     public function create()
     {
         $commoudepts = $this->commoudeptRepository->getAll();
-        return view('centrevote.add',compact('commoudepts'));
+        $provinces = $this->provinceRepository->getAll();
+        $sieges = $this->siegeRepository->getAll();
+        $arrondissements = $this->arrondissementRepository->getAll();
+     //   $commoudepts = $this->commoudeptRepository->getAll();
+        return view('centrevote.add',compact('commoudepts','provinces','sieges','arrondissements'));
     }
     public function allCentrevoteApi(){
         $centrevotes = $this->centrevoteRepository->getAllOnly();
@@ -129,17 +141,53 @@ class CentrevoteController extends Controller
 
         // 4. On insère toutes les lignes dans la base de données
       //  $rows->toArray());
-      $commoudepts = $this->commoudeptRepository->getAll();
-      foreach ($rows as $key => $centrevote) {
-        foreach ($commoudepts as $key1 => $commoudept) {
-            if($centrevote["commoudept"]==$commoudept->nom){
-                Centrevote::create([
-                    "nom"=>$centrevote['centrevote'],
-                    "commoudept_id"=>$commoudept->id,
+      $provinces        = $this->provinceRepository->getAll();
+      $sieges           = $this->siegeRepository->getAllOnLy();
+      $arrondissements  = $this->arrondissementRepository->getAllOnLy();
+      foreach ($rows as $key => $commoudept) {
+        $province_id            = null;
+        $siege_id               = null;
+        $commoudept_id          = null;
+        $arrondissement_id      = null;
 
-                ]);
+        foreach ($provinces as $key1 => $province) {
+            if($commoudept["province"]==$province->province){
+                $province_id = $province->id;
+                foreach ($province->commoudepts as $key => $value) {
+                    if($value->commoudept == $commoudept["commoudept"]);
+                    {
+                        $commoudept_id = $value->id;
+                    }
+                }
+               /* Commoudept::create([
+                    "commoudept"=>$commoudept['commoudept'],
+                    "province_id"=>$province->id
+                ]);*/
+
             }
         }
+
+        foreach ($arrondissements as $key => $value) {
+            if($value->arrondissement==$commoudept['arrondissement'])
+            {
+                $arrondissement_id = $value->id;
+            }
+        }
+
+        foreach ($sieges as $key => $value) {
+            if($value->siege==$commoudept['siege'])
+            {
+                $siege_id = $value->id;
+            }
+        }
+
+        Centrevote::create([
+            "centrevote"=>$commoudept['centrevote'],
+            "province_id"=>$province_id,
+            "siege_id"=>$siege_id,
+            "commoudept_id"=>$commoudept_id,
+            "arrondissement_id"=>$arrondissement_id,
+        ]);
 
     }
             // 5. On supprime le fichier uploadé

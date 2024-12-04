@@ -22,8 +22,13 @@ License: You must have a valid license purchased only from templatemonster to le
     <link href="{{ asset('vendors/jquery-toggles/css/toggles.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('vendors/jquery-toggles/css/themes/toggles-light.css') }}" rel="stylesheet" type="text/css">
 
+
+    <link href=" {{ asset('vendors/datatables.net-dt/css/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href=" {{ asset('vendors/datatables.net-responsive-dt/css/responsive.dataTables.min.css') }} " rel="stylesheet" type="text/css" />
+
     <!-- Custom CSS -->
     <link href="{{ asset('dist/css/style.css') }}" rel="stylesheet" type="text/css">
+
     @yield('css')
 
 </head>
@@ -191,6 +196,230 @@ License: You must have a valid license purchased only from templatemonster to le
                     <ul class="navbar-nav flex-column">
 
                         <!--Menu -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="feather-icon"><i data-feather="activity"></i></span>
+                                <span class="nav-link-text">Tableau de bords</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#dash_drp">
+                                <span class="feather-icon"><i data-feather="map"></i></span>
+                                <span class="nav-link-text">Province</span>
+                            </a>
+                            <ul id="dash_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('province.create') }}">Enregistrer Province</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('province.index') }}">Liste Province</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#commoudept">
+                                <span class="feather-icon"><i data-feather="map"></i></span>
+                                <span class="nav-link-text">Departement ou Commune</span>
+                            </a>
+                            <ul id="commoudept" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('commoudept.create') }}">Enregistrer Departement ou Commune</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('commoudept.index') }}">Liste Departement ou Commune</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#arrondissement">
+                                <span class="feather-icon"><i data-feather="map"></i></span>
+                                <span class="nav-link-text">Arrondissement</span>
+                            </a>
+                            <ul id="arrondissement" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('arrondissement.create') }}">Enregistrer arrondissement</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('arrondissement.index') }}">Liste arrondissement</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#siege">
+                                <span class="feather-icon"><i data-feather="map"></i></span>
+                                <span class="nav-link-text">Siege</span>
+                            </a>
+                            <ul id="siege" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('siege.create') }}">Enregistrer siege</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('siege.index') }}">Liste siege</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#centrevote">
+                                <span class="feather-icon"><i data-feather="map"></i></span>
+                                <span class="nav-link-text">Centre de vote</span>
+                            </a>
+                            <ul id="centrevote" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('centrevote.create') }}">Enregistrer Centre de vote</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('centrevote.index') }}">Liste  Centre de vote</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#electeur">
+                                <span class="feather-icon"><i data-feather="user"></i></span>
+                                <span class="nav-link-text">Electeur</span>
+                            </a>
+                            <ul id="electeur" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('electeur.create') }}">Enregistrer Electeur</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ route('electeur.index') }}">Liste  Electeur</a>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link link-with-badge" href="javascript:void(0);" data-toggle="collapse" data-target="#app_drp">
+                                <span class="feather-icon"><i data-feather="package"></i></span>
+                                <span class="nav-link-text">Application</span>
+                                <span class="badge badge-primary badge-pill">4</span>
+                            </a>
+                            <ul id="app_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="chats.html">Chat</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="calendar.html">Calendar</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="email.html">Email</a>
+                                        </li>
+										<li class="nav-item">
+                                            <a class="nav-link" href="file-manager.html">File Manager</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#auth_drp">
+                                <span class="feather-icon"><i data-feather="zap"></i></span>
+                                <span class="nav-link-text">Authentication</span>
+                            </a>
+                            <ul id="auth_drp" class="nav flex-column collapse collapse-level-1">
+                                <li class="nav-item">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#signup_drp">
+													Sign Up
+												</a>
+                                            <ul id="signup_drp" class="nav flex-column collapse collapse-level-2">
+                                                <li class="nav-item">
+                                                    <ul class="nav flex-column">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="signup.html">Cover</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="signup-simple.html">Simple</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#signin_drp">
+													Login
+												</a>
+                                            <ul id="signin_drp" class="nav flex-column collapse collapse-level-2">
+                                                <li class="nav-item">
+                                                    <ul class="nav flex-column">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="login.html">Cover</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="login-simple.html">Simple</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="javascript:void(0);" data-toggle="collapse" data-target="#recover_drp">
+													Recover Password
+												</a>
+                                            <ul id="recover_drp" class="nav flex-column collapse collapse-level-2">
+                                                <li class="nav-item">
+                                                    <ul class="nav flex-column">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="forgot-password.html">Forgot Password</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" href="reset-password.html">Reset Password</a>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="lock-screen.html">Lock Screen</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="404.html">Error 404</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="maintenance.html">Maintenance</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
 
                 </div>
@@ -282,7 +511,22 @@ License: You must have a valid license purchased only from templatemonster to le
     <script src="{{ asset('vendors/jquery-toggles/toggles.min.js') }}"></script>
     <script src="{{ asset('dist/js/toggle-data.js') }}"></script>
 
-    <!-- Init JavaScript -->
+
+     <!-- Data Table JavaScript -->
+     <script src="{{ asset('vendors/datatables.net/js/jquery.dataTables.min.js') }}  "></script>
+     <script src="{{ asset('vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-dt/js/dataTables.dataTables.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+     <script src="{{ asset('vendors/jszip/dist/jszip.min.js') }}"></script>
+     <script src="{{ asset('vendors/pdfmake/build/pdfmake.min.js') }}"></script>
+     <script src="{{ asset('vendors/pdfmake/build/vfs_fonts.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+     <script src="{{ asset('vendors/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+     <script src="{{ asset('dist/js/dataTables-data.js') }}"></script>
+         <!-- Init JavaScript -->
     <script src="{{ asset('dist/js/init.js') }}"></script>
 @yield('script')
 </body>
