@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ArrondissementController;
+use App\Http\Controllers\CarteController;
 use App\Http\Controllers\CentrevoteController;
 use App\Http\Controllers\CommoudeptController;
 use App\Http\Controllers\ElecteurController;
@@ -31,5 +32,8 @@ Route::resource('electeur', ElecteurController::class)/*->middleware("auth")*/;
 
 
 Route::get('/carte', function () {
-    return view('carte');
-});
+    $electeur = null;
+    $erreur = null;
+    return view('carte',compact("electeur","erreur"));
+})->name("carte");
+Route::post('/carte',[CarteController::class,'carte'])->name("carte.search")/*->middleware("auth")*/;

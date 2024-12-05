@@ -23,6 +23,7 @@ $(document).ready(function() {
 	$('#datable_3').DataTable( {
 		dom: 'Bfrtip',
 		responsive: true,
+        ordering:  false,
 		language: {  url: 'https://cdn.datatables.net/plug-ins/2.1.8/i18n/fr-FR.json', },
 		"bPaginate": true,
 		"info":     false,

@@ -62,6 +62,42 @@
                         </div>
                     </div>
                     <div class="col-lg-6">
+                        <label>Province</label>
+                        <select class="form-control" name="province" required="">
+                            @foreach ($provinces as $province)
+                            <option value="{{$province->province}}">{{$province->province}}</option>
+                                @endforeach
+
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Commoudept</label>
+                        <select class="form-control" name="commoudept" required="">
+                            @foreach ($commoudepts as $commoudept)
+                            <option value="{{$commoudept->commoudept}}">{{$commoudept->commoudept}}</option>
+                                @endforeach
+
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Arrondissement</label>
+                        <select class="form-control" name="arrondissement" required="">
+                            @foreach ($arrondissements as $arrondissement)
+                            <option value="{{$arrondissement->arrondissement}}">{{$arrondissement->arrondissement}}</option>
+                                @endforeach
+
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Siege</label>
+                        <select class="form-control" name="siege" required="">
+                            @foreach ($sieges as $siege)
+                            <option value="{{$siege->siege}}">{{$siege->siege}}</option>
+                                @endforeach
+
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
                         <label>Centrevote</label>
                         <select class="form-control" name="centrevote_id" required="">
                             @foreach ($centrevotes as $centrevote)

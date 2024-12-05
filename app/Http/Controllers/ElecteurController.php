@@ -2,19 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Electeur;
+use App\Repositories\ArrondissementRepository;
 use App\Repositories\CentrevoteRepository;
+use App\Repositories\CommoudeptRepository;
 use App\Repositories\ElecteurRepository;
+use App\Repositories\ProvinceRepository;
+use App\Repositories\SiegeRepository;
 use Illuminate\Http\Request;
+use Spatie\SimpleExcel\SimpleExcelReader;
 
 class ElecteurController extends Controller
 {
     protected $electeurRepository;
     protected $centrevoteRepository;
 
+    protected $commoudeptRepository;
+    protected $provinceRepository;
 
-    public function __construct(ElecteurRepository $electeurRepository,CentrevoteRepository $centrevoteRepository){
-        $this->electeurRepository =$electeurRepository;
-        $this->centrevoteRepository =$centrevoteRepository;
+    protected $siegeRepository;
+    protected $arrondissementRepository;
+    public function __construct(ElecteurRepository $electeurRepository,CentrevoteRepository $centrevoteRepository,CommoudeptRepository $commoudeptRepository,
+    ProvinceRepository $provinceRepository,SiegeRepository $siegeRepository,ArrondissementRepository $arrondissementRepository){
+        $this->electeurRepository           =   $electeurRepository;
+        $this->centrevoteRepository         =   $centrevoteRepository;
+        $this->siegeRepository              =   $siegeRepository;
+        $this->arrondissementRepository     =   $arrondissementRepository;
+        $this->provinceRepository           =   $provinceRepository;
+        $this->commoudeptRepository         =   $commoudeptRepository;
     }
 
     /**
@@ -40,7 +55,11 @@ class ElecteurController extends Controller
     public function create()
     {
         $centrevotes = $this->centrevoteRepository->getAll();
-        return view('electeur.add',compact('centrevotes'));
+        $commoudepts = $this->commoudeptRepository->getAll();
+        $provinces = $this->provinceRepository->getAll();
+        $sieges = $this->siegeRepository->getAll();
+        $arrondissements = $this->arrondissementRepository->getAll();
+        return view('electeur.add',compact('centrevotes','commoudepts','provinces','sieges','arrondissements'));
     }
 
     /**
@@ -78,7 +97,11 @@ class ElecteurController extends Controller
     {
         $centrevotes = $this->centrevoteRepository->getAll();
         $electeur = $this->electeurRepository->getById($id);
-        return view('electeur.edit',compact('electeur','centrevotes'));
+        $commoudepts = $this->commoudeptRepository->getAll();
+        $provinces = $this->provinceRepository->getAll();
+        $sieges = $this->siegeRepository->getAll();
+        $arrondissements = $this->arrondissementRepository->getAll();
+        return view('electeur.edit',compact('electeur','centrevotes','commoudepts','provinces','sieges','arrondissements'));
     }
 
     /**
@@ -105,4 +128,81 @@ class ElecteurController extends Controller
         $this->electeurRepository->destroy($id);
         return redirect('electeur');
     }
+
+    public function importExcel(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'bail|required|file|mimes:xlsx'
+        ]);
+
+        // 2. On déplace le fichier uploadé vers le dossier "public" pour le lire
+        $fichier = $request->file->move(public_path(), $request->file->hashName());
+
+        // 3. $reader : L'instance Spatie\SimpleExcel\SimpleExcelReader
+        $reader = SimpleExcelReader::create($fichier);
+
+        // On récupère le contenu (les lignes) du fichier
+        $rows = $reader->getRows();
+
+        // $rows est une Illuminate\Support\LazyCollection
+
+        // 4. On insère toutes les lignes dans la base de données
+      //  $rows->toArray());
+      $provinces        = $this->provinceRepository->getAll();
+      $sieges           = $this->siegeRepository->getAllOnLy();
+      $arrondissements  = $this->arrondissementRepository->getAllOnLy();
+      foreach ($rows as $key => $commoudept) {
+        $province_id            = null;
+        $siege_id               = null;
+        $commoudept_id          = null;
+        $arrondissement_id      = null;
+
+        foreach ($provinces as $key1 => $province) {
+            if($commoudept["province"]==$province->province){
+                $province_id = $province->id;
+                foreach ($province->commoudepts as $key => $value) {
+                    if($value->commoudept == $commoudept["commoudept"]);
+                    {
+                        $commoudept_id = $value->id;
+                    }
+                }
+               /* Commoudept::create([
+                    "commoudept"=>$commoudept['commoudept'],
+                    "province_id"=>$province->id
+                ]);*/
+
+            }
+        }
+
+        foreach ($arrondissements as $key => $value) {
+            if($value->arrondissement==$commoudept['arrondissement'])
+            {
+                $arrondissement_id = $value->id;
+            }
+        }
+
+        foreach ($sieges as $key => $value) {
+            if($value->siege==$commoudept['siege'])
+            {
+                $siege_id = $value->id;
+            }
+        }
+
+        Electeur::create([
+            "centrevote"=>$commoudept['centrevote'],
+            "province_id"=>$province_id,
+            "siege_id"=>$siege_id,
+            "commoudept_id"=>$commoudept_id,
+            "arrondissement_id"=>$arrondissement_id,
+        ]);
+
+    }
+            // 5. On supprime le fichier uploadé
+            $reader->close(); // On ferme le $reader
+           // unlink($fichier);
+
+            // 6. Retour vers le formulaire avec un message $msg
+            return redirect()->back()->with('success', 'Données importées avec succès.');
+    }
+
 }
